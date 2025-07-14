@@ -67,9 +67,13 @@
       promptInput.value = "floral, soft, pastel style";});
     
     const MinimalButton = document.getElementById('MinimalButton');
-    
+    MinimalButton.addEventListener('click', () => {
+      promptInput.value = "minimal, clean, simple style";});
+      
     const BoldButton = document.getElementById('BoldButton');
-    
+    BoldButton.addEventListener('click', () => {
+      promptInput.value = "bold, bright, high contrast style";});
+      
     const generateBtn = document.getElementById('generateBtn');
     const resultDiv = document.getElementById('result');
 
