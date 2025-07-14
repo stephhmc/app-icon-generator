@@ -1,0 +1,37 @@
+const imageInput = document.getElementById('imageInput');
+const promptInput = document.getElementById('promptInput');
+const generateBtn = document.getElementById('generateBtn');
+const resultDiv = document.getElementById('result');
+
+generateBtn.addEventListener('click', () => {
+  const file = imageInput.files[0];
+  if (!file) {
+    alert('Please upload an image first.');
+    return;
+  }
+
+  const promptText = promptInput.value;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    resultDiv.innerHTML = `
+      <h3>Generated Icon Preview</h3>
+      <img id="generatedImage" src="${e.target.result}" alt="Uploaded Image" style="display: block;">
+      <p><strong>Prompt:</strong> ${promptText || '(none)'}</p>
+      <button id="downloadBtn">Download Icon</button>
+    `;
+
+    const downloadBtn = document.getElementById('downloadBtn');
+    const img = document.getElementById('generatedImage');
+
+    downloadBtn.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.href = img.src;
+      link.download = 'icon.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
+  reader.readAsDataURL(file);
+});
