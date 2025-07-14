@@ -16,9 +16,8 @@
       border: 1px solid #ccc;
       display: block;
     }
-    textarea {
+    textarea, input[type="text"] {
       width: 100%;
-      height: 80px;
       margin-top: 10px;
       font-size: 16px;
       padding: 8px;
@@ -41,10 +40,13 @@
 
   <h2>App Icon Generator Prototype</h2>
 
+  <label for="appNameInput">Which app is this icon for?</label><br>
+  <input type="text" id="appNameInput" placeholder="e.g. Messages, Spotify"><br>
+
   <label for="imageInput">Upload an image:</label><br>
   <input type="file" id="imageInput" accept="image/*"><br>
 
-  <label for="promptInput">Enter optional text prompts:</label><br>
+  <label for="promptInput">Enter optional style prompts:</label><br>
   <textarea id="promptInput" placeholder="e.g. floral style, pastel colours"></textarea><br>
 
   <button id="generateBtn">Generate Icon</button>
@@ -52,12 +54,14 @@
   <div id="result"></div>
 
   <script>
+    const appNameInput = document.getElementById('appNameInput');
     const imageInput = document.getElementById('imageInput');
     const promptInput = document.getElementById('promptInput');
     const generateBtn = document.getElementById('generateBtn');
     const resultDiv = document.getElementById('result');
 
     generateBtn.addEventListener('click', () => {
+      const appName = appNameInput.value.trim();
       const file = imageInput.files[0];
       if (!file) {
         alert('Please upload an image first.');
@@ -71,6 +75,7 @@
         resultDiv.innerHTML = `
           <h3>Generated Icon Preview</h3>
           <img id="generatedImage" src="${e.target.result}" alt="Uploaded Image">
+          <p><strong>App:</strong> ${appName || '(unspecified)'}</p>
           <p><strong>Prompt:</strong> ${promptText || '(none)'}</p>
           <button id="downloadBtn">Download Icon</button>
         `;
