@@ -67,95 +67,96 @@
   <div id="combinedPromptPreview"></div>
 
   <button id="generateBtn">Generate Icon</button>
+  <button id="resetBtn" style="background-color: #FF3B30; margin-top: 10px;">Reset</button>
 
   <div id="result"></div>
 
   <script>
-  const appNameInput = document.getElementById('appNameInput');
-  const imageInput = document.getElementById('imageInput');
-  const promptInput = document.getElementById('promptInput');
-  const combinedPromptPreview = document.getElementById('combinedPromptPreview');
-  const resultDiv = document.getElementById('result');
+    const appNameInput = document.getElementById('appNameInput');
+    const imageInput = document.getElementById('imageInput');
+    const promptInput = document.getElementById('promptInput');
+    const combinedPromptPreview = document.getElementById('combinedPromptPreview');
+    const resultDiv = document.getElementById('result');
 
-  const FloralButton = document.getElementById('FloralButton');
-  FloralButton.addEventListener('click', () => {
-    promptInput.value = "floral, soft, pastel style";
+    const FloralButton = document.getElementById('FloralButton');
+    FloralButton.addEventListener('click', () => {
+      promptInput.value = "floral, soft, pastel style";
+      updateCombinedPrompt();
+    });
+
+    const MinimalButton = document.getElementById('MinimalButton');
+    MinimalButton.addEventListener('click', () => {
+      promptInput.value = "minimal, clean, simple style";
+      updateCombinedPrompt();
+    });
+
+    const BoldButton = document.getElementById('BoldButton');
+    BoldButton.addEventListener('click', () => {
+      promptInput.value = "bold, bright, high contrast style";
+      updateCombinedPrompt();
+    });
+
+    const generateBtn = document.getElementById('generateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function updateCombinedPrompt() {
+      const appName = appNameInput.value.trim() || '(unspecified)';
+      const stylePrompt = promptInput.value.trim() || '(none)';
+      combinedPromptPreview.textContent = `Create an app icon for the app "${appName}" in the style of ${stylePrompt}.`;
+    }
+
+    appNameInput.addEventListener('input', updateCombinedPrompt);
+    promptInput.addEventListener('input', updateCombinedPrompt);
+
     updateCombinedPrompt();
-  });
 
-  const MinimalButton = document.getElementById('MinimalButton');
-  MinimalButton.addEventListener('click', () => {
-    promptInput.value = "minimal, clean, simple style";
-    updateCombinedPrompt();
-  });
+    generateBtn.addEventListener('click', () => {
+      const appName = appNameInput.value.trim();
+      const promptText = promptInput.value;
 
-  const BoldButton = document.getElementById('BoldButton');
-  BoldButton.addEventListener('click', () => {
-    promptInput.value = "bold, bright, high contrast style";
-    updateCombinedPrompt();
-  });
+      resultDiv.innerHTML = `<p>Generating icon<span id="dots">...</span></p>`;
 
-  <button id="generateBtn">Generate Icon</button>
-<button id="resetBtn" style="background-color: #FF3B30; margin-top: 10px;">Reset</button>
+      let dotCount = 0;
+      const dotsInterval = setInterval(() => {
+        dotCount = (dotCount + 1) % 4; // cycles through 0,1,2,3 dots
+        document.getElementById("dots").textContent = '.'.repeat(dotCount);
+      }, 500);
 
-  function updateCombinedPrompt() {
-    const appName = appNameInput.value.trim() || '(unspecified)';
-    const stylePrompt = promptInput.value.trim() || '(none)';
-    combinedPromptPreview.textContent = `Create an app icon for the app "${appName}" in the style of ${stylePrompt}.`;
-  }
+      setTimeout(() => {
+        clearInterval(dotsInterval);
 
-  appNameInput.addEventListener('input', updateCombinedPrompt);
-  promptInput.addEventListener('input', updateCombinedPrompt);
+        const placeholderImage = "https://source.unsplash.com/200x200/?flowers,icon";
 
-  updateCombinedPrompt();
+        resultDiv.innerHTML = `
+          <h3>Simulated AI-Generated Icon Preview</h3>
+          <img id="generatedImage" src="${placeholderImage}" alt="Generated Icon">
+          <p><strong>App:</strong> ${appName || '(unspecified)'}</p>
+          <p><strong>Prompt:</strong> ${promptText || '(none)'}</p>
+          <button id="downloadBtn">Download Icon</button>
+        `;
 
-  generateBtn.addEventListener('click', () => {
-    const appName = appNameInput.value.trim();
-    const promptText = promptInput.value;
+        const downloadBtn = document.getElementById('downloadBtn');
+        const img = document.getElementById('generatedImage');
 
-    resultDiv.innerHTML = `<p>Generating icon<span id="dots">...</span></p>`;
+        downloadBtn.addEventListener('click', () => {
+          const link = document.createElement('a');
+          link.href = img.src;
+          link.download = 'icon.png';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      }, 2000);
+    });
 
-    let dotCount = 0;
-    const dotsInterval = setInterval(() => {
-      dotCount = (dotCount + 1) % 4; // cycles through 0,1,2,3 dots
-      document.getElementById("dots").textContent = '.'.repeat(dotCount);
-    }, 500);
-
-    setTimeout(() => {
-      clearInterval(dotsInterval);
-
-      const placeholderImage = "https://source.unsplash.com/200x200/?flowers,icon";
-
-      resultDiv.innerHTML = `
-        <h3>Simulated AI-Generated Icon Preview</h3>
-        <img id="generatedImage" src="${placeholderImage}" alt="Generated Icon">
-        <p><strong>App:</strong> ${appName || '(unspecified)'}</p>
-        <p><strong>Prompt:</strong> ${promptText || '(none)'}</p>
-        <button id="downloadBtn">Download Icon</button>
-      `;
-
-      const downloadBtn = document.getElementById('downloadBtn');
-      const img = document.getElementById('generatedImage');
-
-      downloadBtn.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.href = img.src;
-        link.download = 'icon.png';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      });
-    }, 2000);
-  });
-
-  resetBtn.addEventListener('click', () => {
-    appNameInput.value = "";
-    promptInput.value = "";
-    imageInput.value = "";
-    resultDiv.innerHTML = "";
-    updateCombinedPrompt();
-  });
-</script>
+    resetBtn.addEventListener('click', () => {
+      appNameInput.value = "";
+      promptInput.value = "";
+      imageInput.value = "";
+      resultDiv.innerHTML = "";
+      updateCombinedPrompt();
+    });
+  </script>
 
 </body>
 </html>
