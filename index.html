@@ -74,6 +74,7 @@
     const appNameInput = document.getElementById('appNameInput');
     const imageInput = document.getElementById('imageInput');
     const promptInput = document.getElementById('promptInput');
+    const combinedPromptPreview = document.getElementById('combinedPromptPreview');
     
     const FloralButton = document.getElementById('FloralButton');
     FloralButton.addEventListener('click', () => {
@@ -89,7 +90,18 @@
       
     const generateBtn = document.getElementById('generateBtn');
     const resultDiv = document.getElementById('result');
-
+    
+    function updateCombinedPrompt() {
+      const appName = appNameInput.value.trim() || '(unspecified)';
+      const stylePrompt = promptInput.value.trim() || '(none)'; 
+      combinedPromptPreview.textContent = `Create an app icon for the app "${appName}" in the style of ${stylePrompt}.`;
+    }
+    
+    appNameInput.addEventListener('input', updateCombinedPrompt);
+    promptInput.addEventListener('input', updateCombinedPrompt);
+    
+    updateCombinedPrompt();
+    
     generateBtn.addEventListener('click', () => {
       const appName = appNameInput.value.trim();
       const file = imageInput.files[0];
