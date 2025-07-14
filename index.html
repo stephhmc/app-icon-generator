@@ -43,7 +43,7 @@
       color: #555;
       min-height: 50px;
       white-space: pre-wrap;
-}
+    }
   </style>
 </head>
 <body>
@@ -58,13 +58,13 @@
 
   <label for="promptInput">Enter optional style prompts:</label><br>
   Choose a style:
-  <button id="FloralButton" type="Button">Floral</button>
-  <button id="MinimalButton" type="Button">Minimal</button>
-  <button id="BoldButton" type="Button">Bold</button>
+  <button id="FloralButton" type="button">Floral</button>
+  <button id="MinimalButton" type="button">Minimal</button>
+  <button id="BoldButton" type="button">Bold</button>
   <textarea id="promptInput" placeholder="e.g. floral style, pastel colours"></textarea><br>
 
-<label for="combinedPromptPreview"><strong>AI prompt preview:</strong></label>
-<div id="combinedPromptPreview" style="white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background: #f9f9f9; min-height: 50px;"></div>
+  <label for="combinedPromptPreview"><strong>AI prompt preview:</strong></label>
+  <div id="combinedPromptPreview"></div>
 
   <button id="generateBtn">Generate Icon</button>
 
@@ -78,15 +78,21 @@
     
     const FloralButton = document.getElementById('FloralButton');
     FloralButton.addEventListener('click', () => {
-      promptInput.value = "floral, soft, pastel style";});
+      promptInput.value = "floral, soft, pastel style";
+      updateCombinedPrompt();
+    });
     
     const MinimalButton = document.getElementById('MinimalButton');
     MinimalButton.addEventListener('click', () => {
-      promptInput.value = "minimal, clean, simple style";});
+      promptInput.value = "minimal, clean, simple style";
+      updateCombinedPrompt();
+    });
       
     const BoldButton = document.getElementById('BoldButton');
     BoldButton.addEventListener('click', () => {
-      promptInput.value = "bold, bright, high contrast style";});
+      promptInput.value = "bold, bright, high contrast style";
+      updateCombinedPrompt();
+    });
       
     const generateBtn = document.getElementById('generateBtn');
     const resultDiv = document.getElementById('result');
@@ -104,19 +110,16 @@
     
     generateBtn.addEventListener('click', () => {
       const appName = appNameInput.value.trim();
-      const file = imageInput.files[0];
-      if (!file) {
-        alert('Please upload an image first.');
-        return;
-      }
-
       const promptText = promptInput.value;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
+      resultDiv.innerHTML = `<p>Generating icon...</p>`;
+
+      setTimeout(() => {
+        const placeholderImage = "https://source.unsplash.com/200x200/?flowers,icon";
+
         resultDiv.innerHTML = `
-          <h3>Generated Icon Preview</h3>
-          <img id="generatedImage" src="${e.target.result}" alt="Uploaded Image">
+          <h3>Simulated AI-Generated Icon Preview</h3>
+          <img id="generatedImage" src="${placeholderImage}" alt="Generated Icon">
           <p><strong>App:</strong> ${appName || '(unspecified)'}</p>
           <p><strong>Prompt:</strong> ${promptText || '(none)'}</p>
           <button id="downloadBtn">Download Icon</button>
@@ -133,8 +136,7 @@
           link.click();
           document.body.removeChild(link);
         });
-      };
-      reader.readAsDataURL(file);
+      }, 2000);
     });
   </script>
 
